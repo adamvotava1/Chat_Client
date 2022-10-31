@@ -38,9 +38,9 @@ public class InMemoryChatClient implements ChatClient{
 
     @Override
     public void logout() {
+        addSystemMessage(Message.USER_LOGGED_OUT, loggedUser);
         loggedUsers.remove(loggedUser);
         loggedUser = null;
-        addSystemMessage(Message.USER_LOGGED_OUT, loggedUser);
         System.out.println("user logged out");
         raiseEventLoggedUsersChanged();
     }

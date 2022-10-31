@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     JTextArea txtChatArea;
-    private ChatClient chatClient;
+    private final ChatClient chatClient;
     private JTextField txtInputMessage;
 
     public MainFrame(int width, int height, ChatClient chatClient){
@@ -95,21 +95,13 @@ public class MainFrame extends JFrame {
         }*/
 
         chatClient.addActionListener(e -> {
-            if(e.getID()==2);
-                refreshMessages();
+            if(e.getID()==2) refreshMessages();
         });
         return panel;
     }
 
     private JPanel initLoggedUsersPanel() {
         JPanel panel = new JPanel();
-
-        Object data[][] = new Object[][]{
-                {"0,0", "1,1"},
-                {"1,0", "1,1"},
-                {"xxx", "axax"}
-        };
-
 
         JTable tblLoggedUsers = new JTable();
         LoggedUsersTableModel loggedUsersTableModel = new LoggedUsersTableModel(chatClient);
@@ -121,7 +113,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JScrollPane scrollPane = new JScrollPane();
+        JScrollPane scrollPane = new JScrollPane(tblLoggedUsers);
         scrollPane.setPreferredSize(new Dimension(250, 500));
         panel.add(scrollPane);
         return panel;
