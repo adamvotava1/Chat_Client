@@ -1,13 +1,14 @@
 package models.chatClients.fileOperations;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import models.Message;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.FileWriter;
@@ -22,6 +23,8 @@ public class JsonChatFileOperations implements ChatFileOperations{
         gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
                 .setPrettyPrinting()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
                 .create();
     }
 
@@ -63,5 +66,25 @@ public class JsonChatFileOperations implements ChatFileOperations{
         }
 
         return new ArrayList<>();
+    }
+}
+
+class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime>{
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    @Override
+    public JsonElement serialize(LocalDateTime localDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
+        return new JsonPrimitive(formatter.format(localDateTime));
+    }
+
+}
+
+class LocalDateTimeDeserializer implements JsonDeserializer<LocalDateTime>{
+
+    @Override
+    public LocalDateTime deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+        return LocalDateTime.parse(jsonElement.getAsString(),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
