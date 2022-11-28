@@ -19,7 +19,7 @@ public class DbInitializer {
             Connection conn = DriverManager.getConnection(url);
 
             String sql =
-                    "CREATE TABLE  ChatMessages"
+                    "CREATE TABLE ChatMessages"
                     + "("
                         + "id INT NOT NULL GENERATED ALWAYS AS IDENTITY "
                             +"CONSTRAINT ChatMessages_PK PRIMARY KEY, "

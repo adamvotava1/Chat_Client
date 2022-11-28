@@ -2,6 +2,7 @@ import models.Message;
 import models.chatClients.ChatClient;
 import models.chatClients.FileChatClient;
 import models.chatClients.InMemoryChatClient;
+import models.chatClients.api.ApiChatClient;
 import models.chatClients.fileOperations.ChatFileOperations;
 import models.chatClients.fileOperations.JsonChatFileOperations;
 import models.database.DatabaseOperations;
@@ -9,8 +10,14 @@ import models.database.DbInitializer;
 import models.database.JdbcDatabaseOperations;
 import models.gui.MainFrame;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
+        //http://fimuhkpro22021.aspifyhost.cz/swagger/index.html
+
         final String databaseDriver = "org.apache.derby.jdbc.EmbeddedDriver";
         final String databaseUrl = "jdbc:derby:ChatClientDb_skC";
 
@@ -29,7 +36,7 @@ public class Main {
         //testChat();
         ChatFileOperations chatFileOperations = new JsonChatFileOperations();
 
-        ChatClient chatClient = new FileChatClient(chatFileOperations);
+        ChatClient chatClient = new ApiChatClient();
 
         MainFrame window = new MainFrame(800, 600,chatClient);
     }
@@ -43,5 +50,14 @@ public class Main {
         chatClient.sendMessage("Ahoj2");
 
         chatClient.logout();
+    }
+
+    private static List<Field> getAllFields(Class<?> cls){
+        List<Field> fieldList = new ArrayList<>();
+        for (Field f:
+                cls.getDeclaredFields()) {
+            fieldList.add(f);
+        }
+        return fieldList;
     }
 }

@@ -32,6 +32,7 @@ public class JdbcDatabaseOperations implements DatabaseOperations{
 
     @Override
     public List<Message> getMessages() {
+        //TODO
         return null;
     }
 }
