@@ -90,9 +90,6 @@ public class MainFrame extends JFrame {
         JScrollPane scrollPane = new JScrollPane(txtChatArea);
         panel.add(scrollPane);
 
-        /*for(int i = 0; i< 50; i++) {
-            txtChatArea.append("Message" + i + "\n");
-        }*/
 
         chatClient.addActionListener(e -> {
             if(e.getID()==2) refreshMessages();
