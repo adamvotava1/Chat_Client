@@ -44,33 +44,30 @@ public class MainFrame extends JFrame {
 
 
         JButton btnLogin = new JButton("Login");
-        btnLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String userName = txtInputUserName.getText();
-                System.out.println("btn login clicked - " + txtInputUserName.getText());
+        btnLogin.addActionListener(e -> {
+            String userName = txtInputUserName.getText();
+            System.out.println("btn login clicked - " + txtInputUserName.getText());
 
-                if(chatClient.isAuthenticated()){
-                    //LOGOUT
-                    chatClient.logout();
-                    btnLogin.setText("Login");
-                    txtInputUserName.setEditable(true);
-                    txtInputMessage.setEnabled(false);
-                    txtChatArea.setEnabled(false);
+            if(chatClient.isAuthenticated()){
+                //LOGOUT
+                chatClient.logout();
+                btnLogin.setText("Login");
+                txtInputUserName.setEditable(true);
+                txtInputMessage.setEnabled(false);
+                txtChatArea.setEnabled(false);
+            }
+            else {
+                if(userName.length()<1){
+                    JOptionPane.showMessageDialog(
+                            null,"Enter your userName","Error",JOptionPane.WARNING_MESSAGE
+                    );
+                    return;
                 }
-                else {
-                    if(userName.length()<1){
-                        JOptionPane.showMessageDialog(
-                                null,"Enter your userName","Error",JOptionPane.WARNING_MESSAGE
-                        );
-                        return;
-                    }
-                    chatClient.login(userName);
-                    btnLogin.setText("Logout");
-                    txtInputUserName.setEditable(false);
-                    txtInputMessage.setEnabled(true);
-                    txtChatArea.setEnabled(true);
-                }
+                chatClient.login(userName);
+                btnLogin.setText("Logout");
+                txtInputUserName.setEditable(false);
+                txtInputMessage.setEnabled(true);
+                txtChatArea.setEnabled(true);
             }
         });
 
@@ -104,7 +101,8 @@ public class MainFrame extends JFrame {
         LoggedUsersTableModel loggedUsersTableModel = new LoggedUsersTableModel(chatClient);
         tblLoggedUsers.setModel(loggedUsersTableModel);
 
-        chatClient.addActionListener(e -> {
+        chatClient.addActionListener(
+                e -> {
             if(e.getID()==1){
                 loggedUsersTableModel.fireTableDataChanged();
             }
@@ -125,7 +123,7 @@ public class MainFrame extends JFrame {
         JButton btnSendMessage = new JButton("Send");
         btnSendMessage.addActionListener(e -> {
             String msgText = txtInputMessage.getText();
-            System.out.println("btn send clicked - " + txtInputMessage.getText());
+            //System.out.println("btn send clicked - " + txtInputMessage.getText());
             txtChatArea.append(txtInputMessage.getText() + "\n");
 
             if(msgText.length() ==0)
@@ -135,16 +133,14 @@ public class MainFrame extends JFrame {
 
             chatClient.sendMessage(msgText);
             txtInputMessage.setText("");
-            //refreshMessages();
+            refreshMessages();
         });
         panel.add(btnSendMessage);
         return panel;
     }
 
     private void refreshMessages() {
-        if(!chatClient.isAuthenticated())
-            return;
-
+        if(!chatClient.isAuthenticated()) return;
         txtChatArea.setText("");
         for (Message msg:
             chatClient.getMessages()) {

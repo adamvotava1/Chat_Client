@@ -24,6 +24,7 @@ public class DatabaseChatClient implements ChatClient{
     @Override
     public void sendMessage(String text) {
         Message msg = new Message(loggedUser,text);
+        messages.add(msg);
         databaseOperations.addMessage(msg);
         raiseEventMessagesChanged();
     }

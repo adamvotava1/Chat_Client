@@ -25,7 +25,7 @@ public class Main {
         DbInitializer dbInitializer = new DbInitializer(databaseDriver, databaseUrl);
         dbInitializer.init();
 
-        DatabaseOperations databaseOperations = null;
+        DatabaseOperations databaseOperations;
         try{
             databaseOperations =
                     new JdbcDatabaseOperations(databaseDriver, databaseUrl);
@@ -35,11 +35,12 @@ public class Main {
             return;
         }
 
-        //testChat();
         ChatFileOperations chatFileOperations = new JsonChatFileOperations();
 
         //ChatClient chatClient = new FileChatClient(chatFileOperations);
         ChatClient chatClient = new DatabaseChatClient(databaseOperations);
+        //ChatClient chatClient = new InMemoryChatClient();
+        //ChatClient chatClient = new ApiChatClient();
 
         MainFrame window = new MainFrame(800, 600,chatClient);
     }

@@ -34,7 +34,7 @@ public class JdbcDatabaseOperations implements DatabaseOperations{
 
     @Override
     public List<Message> getMessages() {
-        List<Message> messages = new ArrayList<>();
+        final List<Message> messages = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
@@ -44,6 +44,7 @@ public class JdbcDatabaseOperations implements DatabaseOperations{
                 String text = rs.getString("text");
                 messages.add(new Message(author, text));
             }
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

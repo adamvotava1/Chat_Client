@@ -69,7 +69,7 @@ public class InMemoryChatClient implements ChatClient{
 
     private void raiseEventLoggedUsersChanged(){
         for (ActionListener al:
-             listeners) {
+                listeners) {
             al.actionPerformed(
                     new ActionEvent(
                             this,
@@ -93,7 +93,7 @@ public class InMemoryChatClient implements ChatClient{
         }
     }
 
-    private  void addSystemMessage(int type, String username){
+    private void addSystemMessage(int type, String username){
         messages.add(new Message(type, username));
         raiseEventMessagesChanged();
     }
